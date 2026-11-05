@@ -5,7 +5,7 @@
     prev = document.querySelector("#slide-prev"),
     next = document.querySelector("#slide-next"),
     count = document.querySelector("#slide-count");
-  let index = 0;
+  let index = 0, requestedIndex = null;
   function update() {
     index = slides.reduce(
       (best, slide, i) =>
@@ -23,18 +23,15 @@
       String(slides.length).padStart(2, "0");
   }
   function move(delta) {
-    const target =
-      slides[Math.max(0, Math.min(slides.length - 1, index + delta))];
-    track.scrollTo({
-      left: target.offsetLeft - track.offsetLeft,
-      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "instant"
-        : "smooth",
-    });
+    requestedIndex = Math.max(0, Math.min(slides.length - 1, (requestedIndex ?? index) + delta));
+    const target = slides[requestedIndex];
+    const left = target.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft;
+    window.cafeScrollTo(track, "left", left, 700, () => { requestedIndex = null; update(); });
   }
   prev.addEventListener("click", () => move(-1));
   next.addEventListener("click", () => move(1));
   track.addEventListener("scroll", update, { passive: true });
+  ["pointerdown", "touchstart", "wheel"].forEach(type => track.addEventListener(type, () => { requestedIndex = null; }, { passive: true }));
   track.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
       e.preventDefault();
