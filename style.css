@@ -1132,7 +1132,11 @@ a { text-decoration-line: underline; text-decoration-color: transparent; text-un
 a:hover { text-decoration-color: currentColor; }
 .navigation a { transition: background-color 280ms var(--motion-ease), color 280ms var(--motion-ease), padding 280ms var(--motion-ease); }
 .home-motion.motion-enabled .masthead { transition: transform 450ms var(--motion-ease), opacity 450ms var(--motion-ease); }
-.splash h1 img { animation: logo-arrival 1400ms var(--motion-ease) both; transform-origin: center; }
+.splash h1 img { transform-origin: center; }
+@media (prefers-reduced-motion: no-preference) {
+ .js-motion .splash h1 img:not(.logo-ready) { opacity: 0; transform: scale(1.12); }
+ .splash h1 img.logo-ready { animation: logo-arrival 1400ms var(--motion-ease) both; }
+}
 @keyframes logo-arrival { from { transform: scale(1.12); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .carousel-controls button:not(:disabled):hover, .calendar-toolbar button:hover { background: var(--paper); color: var(--red); }
 .footer-socials a:hover { opacity: .75; }

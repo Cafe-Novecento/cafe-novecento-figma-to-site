@@ -1,3 +1,20 @@
+
+/* Start the entrance only once the logo can actually be painted. */
+(() => {
+ const logo = document.querySelector(".splash h1 img");
+ if (!logo) return;
+ let started = false;
+ function reveal() {
+   if (started) return;
+   started = true;
+   requestAnimationFrame(() => requestAnimationFrame(() => logo.classList.add("logo-ready")));
+ }
+ if (logo.complete && logo.naturalWidth > 0) reveal();
+ else {
+   logo.addEventListener("load", reveal, { once: true });
+   logo.addEventListener("error", reveal, { once: true });
+ }
+})();
 /* Shared ease-in-out scrolling; native wheel and touch remain under user control. */
 (() => {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
