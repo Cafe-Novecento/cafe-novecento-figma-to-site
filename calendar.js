@@ -48,7 +48,6 @@
       const meta = document.createElement('p'); meta.className = 'meta'; meta.textContent = `Ore ${e.time} · ${e.place}`;
       const description = document.createElement('p'); description.textContent = e.description;
       detail.append(type,heading,meta,description);
-      if (e.href) { const a = document.createElement('a'); a.className = 'textlink'; a.href = e.href; a.textContent = 'Dettagli dell’incontro'; detail.append(a); }
       row.append(time,detail); agenda.append(row);
     }
     if (!entries.length) {
